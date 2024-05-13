@@ -1,7 +1,9 @@
-# Blog CLI Tool
+# Astro Commands 
 
 ## Introduction
-Hey there! This CLI tool is all about making your life easier when it comes to managing blog posts. You can create, update, delete, and list blog posts right from your command line. We're using `bun` because it's super fast and cool for running our scripts.
+Hey there! This little CLI tool is all about making my life easier when it comes to managing blog posts. Currently helpers that help me create, update, delete, and list blog posts right from my command line. Now that I have the scaffolding for this, I want to make it easier to do research on some upcoming pieces, pull info from various tools, etc. Think extract specific table from Notion, specific prompt from some LLM, etc
+
+I'm using `bun` because it's fast and I want to get more familiar with it. It tried running commands from within my little atro blog but something wasn't right about my typescript setup so I just started this repo from scratch and will stay focused on managing the things that feed into the `.md` files. My blog repo will have everything relating to the presentation layer unencombered by all these various little helpers I'll be drawing up.
 
 ![Astro Commands Preview](/assets/astro-commands-help.png)
 
