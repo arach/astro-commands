@@ -26,7 +26,7 @@ export function setupCLI() {
                     });
             },
             async (argv: Arguments<{ title: string; description: string; tags?: string[] }>) => {
-                console.log(chalk.blue('Processing your request...'));
+                console.log(chalk.blue(`Processing your request... ${argv.title} ${argv.description}`));
                 try {
                     await createBlogPost(argv.title, argv.description, argv.tags);
                     console.log(chalk.blue('Blog post created successfully!'));

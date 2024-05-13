@@ -21,7 +21,7 @@ export async function createBlogPost(
     const blogPost: BlogPost = {
         title,
         pubDatetime,
-        author: author || 'defaultAuthor',
+        author: author || 'Author',
         description,
         tags: tags || [],
         excerpt: excerpt || '',
@@ -32,6 +32,7 @@ export async function createBlogPost(
     };
 
     const markdownContent = generateMarkdown(blogPost);
+    console.log(title);
     const fileName = formatFileName(title, pubDatetime);
     const filePath = path.join(config.BLOG_POSTS_PATH, fileName);
 

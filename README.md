@@ -33,8 +33,14 @@ bun install
 Kick things off by running this command and just follow what it says on the screen:
 
 ```bash
-bun src/index.ts --help
+bun astro-commands --help
 ```
+
+> **Note:** When using the create command, you'll likely need to escape quotations. Currently, there's an unresolved issue with the package.json script wrapper that causes it to strip the original command's quotes.
+```bash
+bun astro-commands create -t \"Starting to get the hang of AI assisted development\" --description=\"After roughly a month of writing code with cursor + copilot + GPT4\"
+```
+
 ![Usage](/assets/astro-commands-create.png)
 
 ## Learn More About Bun
