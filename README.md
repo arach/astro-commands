@@ -3,6 +3,8 @@
 ## Introduction
 Hey there! This CLI tool is all about making your life easier when it comes to managing blog posts. You can create, update, delete, and list blog posts right from your command line. We're using `bun` because it's super fast and cool for running our scripts.
 
+![Astro Commands Preview](/assets/astro-commands-help.png)
+
 ## Installation
 
 ### Get Bun on Board
@@ -31,6 +33,7 @@ Kick things off by running this command and just follow what it says on the scre
 ```bash
 bun src/index.ts --help
 ```
+![Usage](/assets/astro-commands-create.png)
 
 ## Learn More About Bun
 
