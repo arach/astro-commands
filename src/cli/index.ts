@@ -5,7 +5,7 @@ import { createBlogPost, updateBlogPost, deleteBlogPost, listBlogPosts } from '.
 
 export function setupCLI() {
     yargs(hideBin(process.argv))
-        .scriptName(chalk.white('bun src/index.ts'))
+        .scriptName(chalk.white('bun astro-commands'))
         .command(
             'create',
             chalk.blue('Create a new blog post'),
