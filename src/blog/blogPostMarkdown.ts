@@ -15,7 +15,7 @@ export function generateMarkdown(blogPost: BlogPost): string {
     const { title, author, pubDatetime, description, tags, excerpt, thumbnail, categories } = blogPost;
     let markdown = `---
 title: "${title}"
-date: "${pubDatetime}"
+puDatetime: ${pubDatetime}
 author: "${author}"
 description: "${description}"
 tags: [${tags.map(tag => `"${tag}"`).join(', ')}]

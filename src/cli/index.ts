@@ -2,6 +2,9 @@ import chalk from 'chalk';
 import yargs, { Arguments } from 'yargs';
 import { hideBin } from 'yargs/helpers';
 import { createBlogPost, updateBlogPost, deleteBlogPost, listBlogPosts } from '../commands/index';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 export function setupCLI() {
     yargs(hideBin(process.argv))
@@ -38,6 +41,42 @@ export function setupCLI() {
         .example(
             'create --title "My New Post" --description "This is the content of my new post"',
             chalk.blue('Creates a new blog post with the specified title and content.')
+        )
+        .command(
+            'move',
+            chalk.green('Move a file to the blog folder'),
+            (yargs) => {
+                return yargs.positional('p', {
+                    alias: 'path',
+                    describe: chalk.green('Relative path of the file to move'),
+                    type: 'string',
+                    demandOption: true
+                });
+            },
+            (argv: Arguments<{ path: string }>) => {
+                const fs = require('fs');
+                const path = require('path');
+                const destinationDir = process.env.BLOG_DESTINATION_DIR || path.join(__dirname, '..', 'blog');
+
+                if (!fs.existsSync(destinationDir)) {
+                    fs.mkdirSync(destinationDir, { recursive: true });
+                }
+
+                // Compute source and destination paths
+                const sourcePath = path.join(__dirname, '../..', argv.path);
+                const destinationPath = path.join(destinationDir, path.basename(argv.path));
+
+                console.log(chalk.green(`Moving file from ${sourcePath} to ${destinationPath}`));
+
+                // Move the file
+                fs.copyFile(sourcePath, destinationPath, (err) => {
+                    if (err) {
+                        console.error(chalk.red('Failed to move file:'), err);
+                    } else {
+                        console.log(chalk.green(`File moved successfully to ${destinationPath}`));
+                    }
+                });
+            }
         )
         .command(
             'update',

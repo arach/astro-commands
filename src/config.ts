@@ -1,5 +1,5 @@
 const config = {
-    BLOG_POSTS_PATH: './content/posts', // Adjust the path as needed
+    BLOG_POSTS_PATH: './content/drafts', // Adjust the path as needed
 };
 
 const SITE = {
