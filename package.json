@@ -7,11 +7,12 @@
     "dotenv": "^16.4.5",
     "openai": "^4.52.0",
     "slugify": "^1.6.6",
+    "winston": "^3.13.0",
     "yargs": "^17.7.2"
   },
   "scripts": {
     "astro-commands": "bun src/index.ts",
     "ac": "bun src/index.ts ",
-    "pplx": "bun src/tools/perplexity.ts"
+    "pplx": "bun src/tools/test.perplexity.ts"
   }
 }

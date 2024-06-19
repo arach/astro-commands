@@ -1,27 +1,45 @@
-class PerplexityChat {
+import fetch from 'node-fetch';
+import logger from './logger';
+
+interface ChatMessage {
+    role: 'system' | 'user';
+    content: string;
+}
+
+export interface ChatConfig {
+    model: string;
+    apiKey: string;
+    maxTokens?: number;
+}
+
+export class PerplexityChat {
+    private model: string;
+    private apiKey: string;
+    private maxTokens: number;
+
+    constructor(config: ChatConfig) {
+        this.model = config.model;
+        this.apiKey = config.apiKey;
+        this.maxTokens = config.maxTokens || 500; // Default max tokens
+    }
+
     async chatCompletion(prompt: string): Promise<string> {
-        const pplxApiKey = process.env.PERPLEXITY_API_KEY;
+        const messages: ChatMessage[] = [
+            { role: 'system', content: 'Be precise and concise.' },
+            { role: 'user', content: prompt }
+        ];
+
         try {
-            console.log("Sending prompt to Perplexity.ai...", prompt);
             const response = await fetch('https://api.perplexity.ai/chat/completions', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + pplxApiKey
+                    'Authorization': `Bearer ${this.apiKey}`
                 },
                 body: JSON.stringify({
-                    model: "llama-3-sonar-large-32k-online",
-                    messages: [
-                        {
-                            "role": "system",
-                            "content": "Be precise and concise."
-                        },
-                        {
-                            "role": "user",
-                            "content": prompt
-                        }
-                    ],
-                    max_tokens: 500
+                    model: this.model,
+                    messages: messages,
+                    max_tokens: this.maxTokens
                 })
             });
 
@@ -30,17 +48,10 @@ class PerplexityChat {
             }
 
             const data = await response.json();
-            console.log("Chat Completion Response:", data);
-            const answer = data.choices[0].message.content;
-            console.log("Chat Completion Response:", answer);
-            return answer;
+            return data.choices[0].message.content;
         } catch (error) {
-            console.error("Failed to fetch chat completion:", error);
+            logger.error("Failed to fetch chat completion", { error, model: this.model });
             throw error;
         }
     }
 }
-
-const chat = new PerplexityChat(); // Corrected instantiation
-chat.chatCompletion("What's up?")
-    .then(answer => console.log("Received answer:", answer))
