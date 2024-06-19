@@ -5,6 +5,9 @@ import { generateMarkdown } from '../blog/blogPostMarkdown';
 import config from '../config'; // Adjust the import path as needed
 import { BlogPost } from '../types';
 import chalk from 'chalk';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 export async function createBlogPost(
     title: string,
@@ -21,7 +24,7 @@ export async function createBlogPost(
     const blogPost: BlogPost = {
         title,
         pubDatetime,
-        author: author || 'Author',
+        author: author || process.env.AUTHOR || 'Author',
         description,
         tags: tags || [],
         excerpt: excerpt || '',

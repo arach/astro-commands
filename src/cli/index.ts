@@ -1,8 +1,9 @@
 import chalk from 'chalk';
 import yargs, { Arguments } from 'yargs';
 import { hideBin } from 'yargs/helpers';
-import { createBlogPost, updateBlogPost, deleteBlogPost, listBlogPosts } from '../commands/index';
+import { createBlogPost, updateBlogPost, moveBlogPost, deleteBlogPost, listBlogPosts } from '../commands/index';
 import dotenv from 'dotenv';
+import { importBooks } from '../commands/importBooks';
 
 dotenv.config();
 
@@ -54,28 +55,12 @@ export function setupCLI() {
                 });
             },
             (argv: Arguments<{ path: string }>) => {
-                const fs = require('fs');
                 const path = require('path');
+                const filePath = argv.path;
                 const destinationDir = process.env.BLOG_DESTINATION_DIR || path.join(__dirname, '..', 'blog');
+                moveBlogPost(filePath, destinationDir);
+                console.log(chalk.green(`File moved successfully!`));
 
-                if (!fs.existsSync(destinationDir)) {
-                    fs.mkdirSync(destinationDir, { recursive: true });
-                }
-
-                // Compute source and destination paths
-                const sourcePath = path.join(__dirname, '../..', argv.path);
-                const destinationPath = path.join(destinationDir, path.basename(argv.path));
-
-                console.log(chalk.green(`Moving file from ${sourcePath} to ${destinationPath}`));
-
-                // Move the file
-                fs.copyFile(sourcePath, destinationPath, (err) => {
-                    if (err) {
-                        console.error(chalk.red('Failed to move file:'), err);
-                    } else {
-                        console.log(chalk.green(`File moved successfully to ${destinationPath}`));
-                    }
-                });
             }
         )
         .command(
@@ -129,6 +114,31 @@ export function setupCLI() {
             'list',
             'Lists all existing blog posts.'
         )
+        .command(
+            'import-books',
+            chalk.magenta('Import books from a CSV file and generate markdown files'),
+            (yargs) => {
+                yargs.positional('p', {
+                    alias: 'path',
+                    describe: chalk.cyan('Path to the CSV file'),
+                    type: 'string',
+                    demandOption: true
+                });
+            },
+            (argv: Arguments<{ path: string }>) => {
+                console.log(chalk.magenta('Starting the import of books...'));
+                try {
+                    importBooks(argv.path);
+                    console.log(chalk.magenta('Books have been successfully imported and markdown files created.'));
+                } catch (error) {
+                    console.error(chalk.red('Failed to import books:'), error);
+                }
+            }
+        )
+        .example(
+            'import-books',
+            'Imports books from the specified CSV file and generates markdown files in the designated directory.'
+        )
         .wrap(null)
         .demandCommand(1, chalk.blue('You need at least one command before moving on'))
         .help('help', 'Display this help message')  // Customizing the help command
@@ -137,4 +147,3 @@ export function setupCLI() {
         .alias('help', 'h')
         .argv;
 }
-
